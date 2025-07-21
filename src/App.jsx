@@ -31,6 +31,23 @@ export default class App extends Component {
     this.setState((prev) => ({
       contacts: prev.contacts.filter((contact) => contact.id !== id),
     }));
+  };
+
+  componentDidMount() {
+    const savedData = localStorage.getItem("userFormData");
+    if (savedData) {
+      const { contacts, filter } = JSON.parse(savedData);
+      this.setState({contacts, filter});
+    }
+  }
+
+  componentDidUpdate(prevState) {
+    if (
+      prevState.contacts !== this.state.contacts ||
+      prevState.contacts.filter !== this.state.contacts.filter
+    ) {
+      localStorage.setItem("userFormData", JSON.stringify({contacts: this.state.contacts, filter: this.state.filter}));
+    }
   }
 
   render() {
@@ -41,14 +58,17 @@ export default class App extends Component {
       <>
         <div>
           <h2>Phonebook</h2>
-          <ContactForm onAddContact={this.handleAddContact}/>
+          <ContactForm onAddContact={this.handleAddContact} />
         </div>
 
-        <div style={{display: "flex", flexDirection: "column"}}>
-          <h2 style={{alignSelf: "start", marginBottom: "0"}}>Contacts</h2>
-          <p style={{alignSelf: "start"}}>Find contacts by name</p>
-          <Filter value={this.state.filter} onChange={this.handleFilter}/>
-          <ContactsList contacts={filteredContacts} onDelete={this.handleDelete}/>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <h2 style={{ alignSelf: "start", marginBottom: "0" }}>Contacts</h2>
+          <p style={{ alignSelf: "start" }}>Find contacts by name</p>
+          <Filter value={this.state.filter} onChange={this.handleFilter} />
+          <ContactsList
+            contacts={filteredContacts}
+            onDelete={this.handleDelete}
+          />
         </div>
       </>
     );
