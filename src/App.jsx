@@ -44,10 +44,14 @@ export default class App extends Component {
   componentDidUpdate(prevState) {
     if (
       prevState.contacts !== this.state.contacts ||
-      prevState.contacts.filter !== this.state.contacts.filter
+      prevState.filter !== this.state.filter
     ) {
       localStorage.setItem("userFormData", JSON.stringify({contacts: this.state.contacts, filter: this.state.filter}));
     }
+  }
+
+  componentWillUnmount() {
+    localStorage.removeItem("userFormData");
   }
 
   render() {
