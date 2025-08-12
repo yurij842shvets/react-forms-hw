@@ -51,7 +51,7 @@ export default class ContactForm extends Component {
           />
           <label style={{display:"flex", justifyContent:"flex-start"}}>Number</label>
           <input
-            type="number"
+            type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
