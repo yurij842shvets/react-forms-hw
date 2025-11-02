@@ -1,42 +1,34 @@
-import { Component } from "react";
+import { useState, useEffect } from "react";
 
-export default class ContactForm extends Component {
-  state = {
-    name: "",
-    number: "",
+export default function ContactForm({ onAddContact }) {
+  const [name, setName] = useState("");
+  const [number,setNumber] = useState("");
+
+  const handleChangeName = (e) => {
+    e.preventDefault();
+    setName(e.target.value);
   };
 
-  handleChangeName = (e) => {
+  const handleChangeNumber = (e) => {
     e.preventDefault();
-    this.setState({ name: e.target.value });
+    setNumber(e.target.value);
   };
 
-  handleChangeNumber = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    this.setState({ number: e.target.value });
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { name, number } = this.state;
     const newContact = {
       id: Math.random().toString(36).slice(2) + Date.now(),
       name: name.trim(),
       number: number.trim(),
     };
-    this.props.onAddContact(newContact)
-    this.setState({ name: "", number: "" });
+    onAddContact(newContact)
+    setName("");
+    setNumber("");
   };
-
- 
-
-  render() {
-
-    const {name, number} = this.state
 
     return (
       <>
-        <form onSubmit={this.handleSubmit}  style={{display: "flex", flexDirection: "column", gap: "20px", border: "1px solid black", padding: "20px"}}>
+        <form onSubmit={handleSubmit}  style={{display: "flex", flexDirection: "column", gap: "20px", border: "1px solid black", padding: "20px"}}>
 
           <label style={{display:"flex", justifyContent:"flex-start"}}>Name</label>
           <input
@@ -46,7 +38,7 @@ export default class ContactForm extends Component {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             value={name}
-            onChange={this.handleChangeName}
+            onChange={handleChangeName}
             style={{width: "200px", }}
           />
           <label style={{display:"flex", justifyContent:"flex-start"}}>Number</label>
@@ -56,7 +48,7 @@ export default class ContactForm extends Component {
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
-            onChange={this.handleChangeNumber}
+            onChange={handleChangeNumber}
             value={number}
             style={{width: "200px"}}
           />
@@ -65,4 +57,4 @@ export default class ContactForm extends Component {
       </>
     );
   }
-}
+
